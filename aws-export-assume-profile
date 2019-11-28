@@ -216,18 +216,17 @@ if ! extract_aws_profile "${CONFIG}" "${PROFILE}"; then
 	exit 1
 fi
 
+CMD="aws sts assume-role \
+		--profile ${PROFILE} \
+		--role-arn ${ROLE_ARN} \
+		--duration-seconds ${DURATION_SECONDS} \
+		--role-session-name ${PROFILE}"
+# echo $CMD
 
 ###
 ### Retrieve credentials from AWS for profile
 ###
-OUTPUT="$(
-	aws sts assume-role \
-		--profile "${SOURCE_PROFILE}" \
-		--role-arn "${ROLE_ARN}" \
-		--duration-seconds "${DURATION_SECONDS}" \
-		--role-session-name "${PROFILE}"
-)"
-
+OUTPUT="$( $CMD )"
 
 ###
 ### Extract credentials
